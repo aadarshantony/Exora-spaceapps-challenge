@@ -1,11 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Exora Dashboard - Single File</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* Universal Box Sizing */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #0d1117;
+            color: #e6edf3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Header Section */
+        header {
+            padding: 80px 0 60px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Centers all direct children horizontally */
+        }
+
+        .logo-dot {
+            width: 30px;
+            height: 30px;
+            background-color: #4dc2f5;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            color: #e6edf3;
+        }
+
+        /* Tagline Styling */
+        .tagline {
+            font-size: 1.2em;
+            color: #8b949e;
+            margin-bottom: 40px;
+            max-width: 600px;
+            /* Limits the width of the text block */
+        }
+
+        .launch-dashboard-btn {
+            background-color: #4dc2f5;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .launch-dashboard-btn:hover {
+            background-color: #2a9cd2;
+        }
+
+        /* Features Section (Three cards at the bottom) */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 30px;
+            width: 30%;
+            min-width: 280px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* Styling for the elegant icon container */
+        .icon-container {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #b882fa, #825ad7);
+            border-radius: 10px;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styling the Font Awesome icon itself */
+        .icon-container i {
+            font-size: 22px;
+            color: #f0f0f0;
+        }
+
+
+        .feature-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #e6edf3;
+        }
+
+        .feature-card p {
+            font-size: 0.95em;
+            color: #8b949e;
+            line-height: 1.5;
+        }
+
+        /* Footer Section */
+        footer {
+            padding: 40px 0;
+            font-size: 0.85em;
+            color: #8b949e;
+            border-top: 1px solid #30363d;
+            margin-top: 40px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-card {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .tagline {
+                font-size: 1em;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div class="container">
+        <header>
+            <div class="logo-dot"></div>
+            <h1>Exora</h1>
+            <p class="tagline">Plan your outdoor events with confidence, powered by NASA Earth Data</p>
+            <button class="launch-dashboard-btn">Launch Dashboard &rarr;</button>
+        </header>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="icon-container">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>NASA-Grade Data</h3>
+                <p>Access real-time satellite observations from POWER, GPM, IMERG, and MERRA-2</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-container">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Probability Forecasts</h3>
+                <p>Get accurate probability predictions for rain, temperature, wind, and more</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-container">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3>Interactive Maps</h3>
+                <p>Visualize weather patterns with location search, pin drops, and area selection</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>NASA Space Apps Challenge 2025 &bull; Powered by NASA Earth Observation Data</p>
+        </footer>
+    </div>
+
+    <script>
+        // Interactive code goes here abcs
+    </script>
 </body>
+
 </html>
