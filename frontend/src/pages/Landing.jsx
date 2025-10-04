@@ -9,7 +9,7 @@ const Landing = () => {
         {
             icon: 'fa-solid fa-satellite',
             title: "NASA-Grade Data",
-            description: "Access real-time satellite observations from POWER, GPM, IMERG, and MERRA-2"
+            description: "Access historical satellite data from NASA's POWER project to generate statistically-based weather forecasts."
         },
         {
             icon: 'fa-chart-line',
