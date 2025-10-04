@@ -1,0 +1,46 @@
+body {
+    overflow-x: hidden; /* This is the fix */
+}
+
+/* Gradient blobs from the design */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+    z-index: 0;
+    will-change: transform, opacity;
+}
+
+body::before {
+    background: linear-gradient(135deg, rgba(77, 194, 245, 0.5), rgba(42, 156, 210, 0.5));
+    top: 5%;
+    left: -5%;
+}
+
+body::after {
+    background: linear-gradient(135deg, rgba(184, 130, 250, 0.5), rgba(130, 90, 215, 0.5));
+    bottom: 10%;
+    right: -5%;
+}
+
+/* Specific box shadows for a more accurate glow effect */
+.shadow-glow-blue {
+    box-shadow: 0 0 15px rgba(77, 194, 245, 0.6), 0 0 5px rgba(77, 194, 245, 0.4);
+}
+
+.shadow-glow-purple {
+    box-shadow: 0 4px 15px rgba(184, 130, 250, 0.4), 0 0 5px rgba(184, 130, 250, 0.2);
+}
+
+.btn-shadow {
+    box-shadow: 0 5px 20px rgba(77, 194, 245, 0.3);
+}
+
+.card-shadow-hover:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.3);
+}
