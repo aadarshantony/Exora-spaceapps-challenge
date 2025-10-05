@@ -1,14 +1,11 @@
 body {
-    overflow-x: hidden; /* This is the fix */
+    overflow-x: hidden;
 }
 
-/* Gradient blobs from the design */
 body::before,
 body::after {
     content: '';
     position: absolute;
-    width: 300px;
-    height: 300px;
     border-radius: 50%;
     filter: blur(100px);
     opacity: 0.3;
@@ -18,17 +15,12 @@ body::after {
 
 body::before {
     background: linear-gradient(135deg, rgba(77, 194, 245, 0.5), rgba(42, 156, 210, 0.5));
-    top: 5%;
-    left: -5%;
 }
 
 body::after {
     background: linear-gradient(135deg, rgba(184, 130, 250, 0.5), rgba(130, 90, 215, 0.5));
-    bottom: 10%;
-    right: -5%;
 }
 
-/* Specific box shadows for a more accurate glow effect */
 .shadow-glow-blue {
     box-shadow: 0 0 15px rgba(77, 194, 245, 0.6), 0 0 5px rgba(77, 194, 245, 0.4);
 }
