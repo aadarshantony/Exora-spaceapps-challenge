@@ -26,10 +26,15 @@ const Landing = () => {
         <section className="flex justify-center items-start">
             <div className="container w-full max-w-screen-xl px-4 text-center">
                 <header className=" pb-16 flex flex-col items-center">
-                    <img src={ExoraLogo} alt="Exora Logo" className='h-60'/>
+                    <img src={ExoraLogo} alt="Exora Logo" className='h-60' />
                     <h1 className="text-6xl -mt-23 mb-3 text-[#e6edf3] font-extrabold">Exora</h1>
                     <p className="tagline text-lg text-[#8b949e] mb-10 max-w-xl leading-relaxed">Plan your outdoor events with confidence, powered by NASA Earth Data</p>
-                    <Link to={'/dashboard'} className="bg-[#4dc2f5] hover:bg-[#2a9cd2] text-white py-4 px-8 rounded-lg text-lg font-bold transition-all duration-300 inline-block btn-shadow hover:-translate-y-1">Launch Dashboard &rarr;</Link>
+                    <Link
+                        to={'/dashboard'}
+                        className="w-full sm:w-auto bg-[#4dc2f5] hover:bg-[#2a9cd2] text-white py-4 px-8 rounded-lg text-lg font-bold transition-all duration-300 inline-block btn-shadow hover:-translate-y-1"
+                    >
+                        Launch Dashboard &rarr;
+                    </Link>
                 </header>
 
                 {/* Updated Feature Cards section */}
