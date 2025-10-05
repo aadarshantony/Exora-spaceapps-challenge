@@ -222,6 +222,279 @@ export default function WeatherPredictor() {
     }
   };
 
+  const getWeatherImplications = (varId, value, unit) => {
+    switch (varId) {
+      case 'precipitation':
+        if (value < 1) return `Minimal rainfall expected (${value.toFixed(1)} mm). Dry conditions likely - good for outdoor activities but may require irrigation for crops. Low risk of flooding or water-related disruptions.`;
+        if (value < 10) return `Light to moderate rainfall predicted (${value.toFixed(1)} mm). Generally favorable conditions with some precipitation. Suitable for most outdoor activities with minor precautions.`;
+        if (value < 50) return `Significant rainfall anticipated (${value.toFixed(1)} mm). Wet conditions expected - prepare for potential surface water, delays in outdoor work, and increased soil moisture. Good for agriculture but may limit construction activities.`;
+        return `Heavy rainfall forecast (${value.toFixed(1)} mm). Prepare for substantial precipitation that may cause flooding, transportation disruptions, and waterlogging. High priority for drainage management and flood preparedness.`;
+      case 'temperature':
+        if (value < 10) return `Cold conditions expected (${value.toFixed(1)}°C). Prepare for low temperatures - appropriate heating, winter clothing, and frost protection for sensitive plants may be needed. Energy demand for heating will be elevated.`;
+        if (value < 25) return `Moderate temperatures predicted (${value.toFixed(1)}°C). Comfortable conditions for most activities. Generally pleasant weather requiring minimal temperature management for indoor or outdoor operations.`;
+        if (value < 35) return `Warm to hot conditions anticipated (${value.toFixed(1)}°C). Prepare for elevated temperatures - ensure adequate cooling, hydration, and heat stress precautions for outdoor workers and vulnerable populations.`;
+        return `Extreme heat forecast (${value.toFixed(1)}°C). High-risk conditions requiring serious heat mitigation measures. Limit outdoor exposure during peak hours, ensure cooling systems are operational, and monitor for heat-related health issues.`;
+      case 'wind':
+        if (value < 5) return `Light winds expected (${value.toFixed(1)} m/s). Calm conditions favorable for most activities including aviation, construction, and outdoor events. Minimal wind-related concerns.`;
+        if (value < 10) return `Moderate winds predicted (${value.toFixed(1)} m/s). Noticeable breeze but generally manageable. Minor precautions for lightweight structures, small vessels, and wind-sensitive operations recommended.`;
+        if (value < 20) return `Strong winds anticipated (${value.toFixed(1)} m/s). Prepare for challenging conditions - secure loose objects, exercise caution with high-profile vehicles, and monitor for potential structural stress on temporary installations.`;
+        return `Very strong winds forecast (${value.toFixed(1)} m/s). Dangerous conditions requiring significant precautions. High risk for transportation disruptions, structural damage, and safety hazards. Consider postponing non-essential outdoor activities.`;
+      case 'humidity':
+        if (value < 30) return `Low humidity conditions (${value.toFixed(1)}%). Dry air may cause discomfort, increased static electricity, and elevated fire risk. Consider humidification for indoor environments and moisturizing for skin care.`;
+        if (value < 60) return `Comfortable humidity levels (${value.toFixed(1)}%). Ideal moisture content for most applications. Generally pleasant conditions for human comfort and preservation of materials.`;
+        if (value < 80) return `Elevated humidity expected (${value.toFixed(1)}%). Muggy conditions that may feel uncomfortable. Increased potential for mold growth, reduced evaporative cooling efficiency, and discomfort during physical activity.`;
+        return `Very high humidity forecast (${value.toFixed(1)}%). Oppressive atmospheric moisture creating significant discomfort. High risk of heat stress amplification, condensation issues, and mold/mildew problems. Enhanced dehumidification may be necessary.`;
+      case 'pressure':
+        if (value < 980) return `Low atmospheric pressure (${value.toFixed(1)} kPa). Associated with unsettled weather systems. Potential for storms, precipitation, and rapidly changing conditions. Monitor weather updates closely.`;
+        if (value < 1020) return `Normal atmospheric pressure (${value.toFixed(1)} kPa). Stable weather conditions expected. Generally predictable weather patterns with minimal atmospheric disturbances.`;
+        return `High atmospheric pressure (${value.toFixed(1)} kPa). Indicates stable, clear weather systems. Generally favorable conditions with reduced precipitation likelihood and good visibility.`;
+      default:
+        return `Predicted value: ${value.toFixed(2)} ${unit}. Refer to local meteorological standards for interpretation of this parameter in your region.`;
+    }
+  };
+
+  const getDisplayStatus = (varId, value) => {
+    switch (varId) {
+      case 'precipitation':
+        if (value < 1) return { text: 'Dry conditions - Good for outdoor activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+        if (value < 10) return { text: 'Light rainfall - Generally favorable', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' };
+        if (value < 50) return { text: 'Wet conditions - Prepare for surface water', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        return { text: 'Heavy rain - Flooding risk, take precautions', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+      case 'temperature':
+        if (value < 10) return { text: 'Cold - Winter clothing and heating needed', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+        if (value < 25) return { text: 'Comfortable - Pleasant for most activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+        if (value < 35) return { text: 'Hot - Stay hydrated and limit sun exposure', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        return { text: 'Extreme heat - Health risk, stay indoors', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+      case 'wind':
+        if (value < 5) return { text: 'Calm - Ideal for all outdoor activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+        if (value < 10) return { text: 'Breezy - Minor precautions needed', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' };
+        if (value < 20) return { text: 'Strong winds - Secure loose objects', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        return { text: 'Dangerous winds - Stay indoors if possible', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+      case 'humidity':
+        if (value < 30) return { text: 'Dry air - May cause discomfort, fire risk', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        if (value < 60) return { text: 'Comfortable - Ideal moisture levels', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+        if (value < 80) return { text: 'Muggy - Uncomfortable, mold risk increases', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        return { text: 'Very humid - Oppressive conditions, health concerns', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+      case 'pressure':
+        if (value < 980) return { text: 'Low pressure - Storms possible, monitor weather', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
+        if (value < 1020) return { text: 'Normal pressure - Stable weather expected', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+        return { text: 'High pressure - Clear, stable conditions', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
+      default:
+        return { text: 'Conditions require interpretation', color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
+    }
+  };
+
+  const downloadCSV = () => {
+    if (!forecast || !location || !targetDate) {
+      toast.error("No forecast data to download");
+      return;
+    }
+
+    try {
+      const rows = [];
+      
+      // Header row
+      rows.push([
+        'Variable',
+        'Parameter Code',
+        'Predicted Value',
+        'Unit',
+        'Confidence (%)',
+        'Range Min',
+        'Range Max',
+        'Standard Deviation',
+        'Samples Used',
+        'Status',
+        'Location Lat',
+        'Location Lng',
+        'Target Date',
+        'Report Generated',
+        'Data Source',
+        'Source URL'
+      ]);
+
+      // Data rows
+      Object.entries(forecast).forEach(([param, data]) => {
+        const varInfo = getVarInfo(param);
+        const unit = getUnit(param);
+        const statusInfo = getDisplayStatus(varInfo.id, data.value);
+        
+        rows.push([
+          varInfo.label,
+          param,
+          data.value.toFixed(4),
+          unit,
+          data.confidence.toFixed(2),
+          data.range.min.toFixed(4),
+          data.range.max.toFixed(4),
+          data.stdDev.toFixed(4),
+          data.samples,
+          statusInfo.text,
+          location.lat.toFixed(6),
+          location.lng.toFixed(6),
+          targetDate,
+          new Date().toISOString(),
+          'NASA POWER API',
+          'https://power.larc.nasa.gov/'
+        ]);
+      });
+
+      // Convert to CSV string
+      const csvContent = rows.map(row => 
+        row.map(cell => {
+          const cellStr = String(cell);
+          if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+            return `"${cellStr.replace(/"/g, '""')}"`;
+          }
+          return cellStr;
+        }).join(',')
+      ).join('\n');
+
+      // Create and download file
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Weather-Forecast-${targetDate}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success("CSV file downloaded successfully!");
+    } catch (err) {
+      console.error("CSV generation error:", err);
+      toast.error(`Failed to generate CSV: ${err.message}`);
+    }
+  };
+
+  const downloadJSON = () => {
+    if (!forecast || !location || !targetDate) {
+      toast.error("No forecast data to download");
+      return;
+    }
+
+    try {
+      const exportData = {
+        metadata: {
+          generatedAt: new Date().toISOString(),
+          targetDate: targetDate,
+          location: {
+            latitude: location.lat,
+            longitude: location.lng,
+            coordinates: `${location.lat.toFixed(6)}°N, ${location.lng.toFixed(6)}°E`
+          },
+          dataSource: {
+            name: "NASA POWER API",
+            url: "https://power.larc.nasa.gov/api/pages/",
+            apiEndpoint: "https://power.larc.nasa.gov/api/temporal/daily/point",
+            documentation: "https://power.larc.nasa.gov/docs/"
+          },
+          methodology: {
+            approach: "Seasonal pattern analysis using 5 years of historical satellite data",
+            algorithm: "Weighted moving average with recent years prioritized",
+            analysisWindow: "±7 days from target date",
+            description: "Historical weather patterns from the same calendar period are analyzed to identify trends and generate predictions"
+          },
+          analysisParameters: {
+            startYear: new Date().getFullYear() - 5,
+            endYear: new Date().getFullYear() - 1,
+            totalYears: 5,
+            dataPoints: Object.values(forecast).reduce((sum, data) => sum + data.samples, 0)
+          }
+        },
+        forecasts: []
+      };
+
+      Object.entries(forecast).forEach(([param, data]) => {
+        const varInfo = getVarInfo(param);
+        const unit = getUnit(param);
+        const statusInfo = getDisplayStatus(varInfo.id, data.value);
+        
+        exportData.forecasts.push({
+          variable: {
+            name: varInfo.label,
+            id: varInfo.id,
+            parameterCode: param,
+            icon: varInfo.icon,
+            color: varInfo.color
+          },
+          prediction: {
+            value: parseFloat(data.value.toFixed(4)),
+            unit: unit,
+            confidence: parseFloat(data.confidence.toFixed(2)),
+            confidenceLevel: data.confidence > 80 ? "High" : data.confidence > 60 ? "Medium" : "Low"
+          },
+          statistics: {
+            range: {
+              minimum: parseFloat(data.range.min.toFixed(4)),
+              maximum: parseFloat(data.range.max.toFixed(4)),
+              unit: unit
+            },
+            standardDeviation: parseFloat(data.stdDev.toFixed(4)),
+            variance: parseFloat(Math.pow(data.stdDev, 2).toFixed(4)),
+            samplesUsed: data.samples,
+            confidenceInterval: `${data.range.min.toFixed(2)} - ${data.range.max.toFixed(2)} ${unit}`
+          },
+          interpretation: {
+            status: statusInfo.text,
+            implications: getWeatherImplications(varInfo.id, data.value, unit),
+            category: data.confidence > 80 ? "High Confidence" : data.confidence > 60 ? "Moderate Confidence" : "Lower Confidence"
+          },
+          distributionData: data.distribution.map(point => ({
+            value: parseFloat(point.value.toFixed(4)),
+            probability: parseFloat(point.probability.toFixed(4)),
+            unit: unit
+          }))
+        });
+      });
+
+      // Add time series data if available
+      if (timeSeriesData) {
+        exportData.historicalTrends = {};
+        Object.entries(timeSeriesData).forEach(([param, data]) => {
+          const varInfo = getVarInfo(param);
+          exportData.historicalTrends[param] = {
+            variable: varInfo.label,
+            parameterCode: param,
+            unit: getUnit(param),
+            description: `Historical yearly averages for ${new Date(targetDate).toLocaleString('default', { month: 'long' })}`,
+            yearlyAverages: data.map(point => ({
+              year: point.year,
+              value: parseFloat(point.value.toFixed(4)),
+              unit: getUnit(param)
+            }))
+          };
+        });
+      }
+
+      exportData.license = {
+        notice: "Data provided by NASA POWER API Project, And the code to analyze the forecast data is mdae by AI",
+        terms: "Please acknowledge NASA POWER API when using this data",
+        moreInfo: "https://power.larc.nasa.gov/data-access-viewer/"
+      };
+
+      // Create and download file
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Weather-Forecast-${targetDate}.json`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success("JSON file downloaded successfully!");
+    } catch (err) {
+      console.error("JSON generation error:", err);
+      toast.error(`Failed to generate JSON: ${err.message}`);
+    }
+  };
+
   const convertSvgToImage = (svg) => {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
@@ -300,68 +573,6 @@ export default function WeatherPredictor() {
         return { status: 'High pressure - Clear, stable conditions', color: [59, 130, 246] };
       default:
         return { status: 'Conditions require interpretation', color: [107, 114, 128] };
-    }
-  };
-
-  const getWeatherImplications = (varId, value, unit) => {
-    switch (varId) {
-      case 'precipitation':
-        if (value < 1) return `Minimal rainfall expected (${value.toFixed(1)} mm). Dry conditions likely - good for outdoor activities but may require irrigation for crops. Low risk of flooding or water-related disruptions.`;
-        if (value < 10) return `Light to moderate rainfall predicted (${value.toFixed(1)} mm). Generally favorable conditions with some precipitation. Suitable for most outdoor activities with minor precautions.`;
-        if (value < 50) return `Significant rainfall anticipated (${value.toFixed(1)} mm). Wet conditions expected - prepare for potential surface water, delays in outdoor work, and increased soil moisture. Good for agriculture but may limit construction activities.`;
-        return `Heavy rainfall forecast (${value.toFixed(1)} mm). Prepare for substantial precipitation that may cause flooding, transportation disruptions, and waterlogging. High priority for drainage management and flood preparedness.`;
-      case 'temperature':
-        if (value < 10) return `Cold conditions expected (${value.toFixed(1)}°C). Prepare for low temperatures - appropriate heating, winter clothing, and frost protection for sensitive plants may be needed. Energy demand for heating will be elevated.`;
-        if (value < 25) return `Moderate temperatures predicted (${value.toFixed(1)}°C). Comfortable conditions for most activities. Generally pleasant weather requiring minimal temperature management for indoor or outdoor operations.`;
-        if (value < 35) return `Warm to hot conditions anticipated (${value.toFixed(1)}°C). Prepare for elevated temperatures - ensure adequate cooling, hydration, and heat stress precautions for outdoor workers and vulnerable populations.`;
-        return `Extreme heat forecast (${value.toFixed(1)}°C). High-risk conditions requiring serious heat mitigation measures. Limit outdoor exposure during peak hours, ensure cooling systems are operational, and monitor for heat-related health issues.`;
-      case 'wind':
-        if (value < 5) return `Light winds expected (${value.toFixed(1)} m/s). Calm conditions favorable for most activities including aviation, construction, and outdoor events. Minimal wind-related concerns.`;
-        if (value < 10) return `Moderate winds predicted (${value.toFixed(1)} m/s). Noticeable breeze but generally manageable. Minor precautions for lightweight structures, small vessels, and wind-sensitive operations recommended.`;
-        if (value < 20) return `Strong winds anticipated (${value.toFixed(1)} m/s). Prepare for challenging conditions - secure loose objects, exercise caution with high-profile vehicles, and monitor for potential structural stress on temporary installations.`;
-        return `Very strong winds forecast (${value.toFixed(1)} m/s). Dangerous conditions requiring significant precautions. High risk for transportation disruptions, structural damage, and safety hazards. Consider postponing non-essential outdoor activities.`;
-      case 'humidity':
-        if (value < 30) return `Low humidity conditions (${value.toFixed(1)}%). Dry air may cause discomfort, increased static electricity, and elevated fire risk. Consider humidification for indoor environments and moisturizing for skin care.`;
-        if (value < 60) return `Comfortable humidity levels (${value.toFixed(1)}%). Ideal moisture content for most applications. Generally pleasant conditions for human comfort and preservation of materials.`;
-        if (value < 80) return `Elevated humidity expected (${value.toFixed(1)}%). Muggy conditions that may feel uncomfortable. Increased potential for mold growth, reduced evaporative cooling efficiency, and discomfort during physical activity.`;
-        return `Very high humidity forecast (${value.toFixed(1)}%). Oppressive atmospheric moisture creating significant discomfort. High risk of heat stress amplification, condensation issues, and mold/mildew problems. Enhanced dehumidification may be necessary.`;
-      case 'pressure':
-        if (value < 980) return `Low atmospheric pressure (${value.toFixed(1)} kPa). Associated with unsettled weather systems. Potential for storms, precipitation, and rapidly changing conditions. Monitor weather updates closely.`;
-        if (value < 1020) return `Normal atmospheric pressure (${value.toFixed(1)} kPa). Stable weather conditions expected. Generally predictable weather patterns with minimal atmospheric disturbances.`;
-        return `High atmospheric pressure (${value.toFixed(1)} kPa). Indicates stable, clear weather systems. Generally favorable conditions with reduced precipitation likelihood and good visibility.`;
-      default:
-        return `Predicted value: ${value.toFixed(2)} ${unit}. Refer to local meteorological standards for interpretation of this parameter in your region.`;
-    }
-  };
-
-  const getDisplayStatus = (varId, value) => {
-    switch (varId) {
-      case 'precipitation':
-        if (value < 1) return { text: 'Dry conditions - Good for outdoor activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
-        if (value < 10) return { text: 'Light rainfall - Generally favorable', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' };
-        if (value < 50) return { text: 'Wet conditions - Prepare for surface water', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        return { text: 'Heavy rain - Flooding risk, take precautions', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
-      case 'temperature':
-        if (value < 10) return { text: 'Cold - Winter clothing and heating needed', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
-        if (value < 25) return { text: 'Comfortable - Pleasant for most activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
-        if (value < 35) return { text: 'Hot - Stay hydrated and limit sun exposure', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        return { text: 'Extreme heat - Health risk, stay indoors', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
-      case 'wind':
-        if (value < 5) return { text: 'Calm - Ideal for all outdoor activities', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
-        if (value < 10) return { text: 'Breezy - Minor precautions needed', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' };
-        if (value < 20) return { text: 'Strong winds - Secure loose objects', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        return { text: 'Dangerous winds - Stay indoors if possible', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
-      case 'humidity':
-        if (value < 30) return { text: 'Dry air - May cause discomfort, fire risk', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        if (value < 60) return { text: 'Comfortable - Ideal moisture levels', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
-        if (value < 80) return { text: 'Muggy - Uncomfortable, mold risk increases', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        return { text: 'Very humid - Oppressive conditions, health concerns', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
-      case 'pressure':
-        if (value < 980) return { text: 'Low pressure - Storms possible, monitor weather', color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' };
-        if (value < 1020) return { text: 'Normal pressure - Stable weather expected', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
-        return { text: 'High pressure - Clear, stable conditions', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' };
-      default:
-        return { text: 'Conditions require interpretation', color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' };
     }
   };
 
@@ -450,7 +661,7 @@ export default function WeatherPredictor() {
         { label: 'Target Date', value: new Date(targetDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) },
         { label: 'Location', value: `${location.lat.toFixed(4)}°N, ${location.lng.toFixed(4)}°E` },
         { label: 'Report Generated', value: new Date().toLocaleDateString('en-US', { dateStyle: 'full' }) },
-        { label: 'Data Source', value: 'NASA POWER API v2.0' },
+        { label: 'Data Source', value: 'NASA POWER API' },
         { label: 'Analysis Period', value: `5 Years (${new Date().getFullYear() - 5} - ${new Date().getFullYear() - 1})` },
         { label: 'Variables Analyzed', value: `${Object.keys(forecast).length} Weather Parameters` }
       ]);
@@ -761,14 +972,25 @@ export default function WeatherPredictor() {
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold">Select Weather Variables</h3>
               {forecast && (
-                <div>
+                <div className="flex gap-2">
                   <button
                     onClick={downloadPDF}
                     className="px-4 py-2 bg-[#4dc2f5] text-white rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 text-sm"
                   >
-                    <i className="fas fa-file-pdf"></i> Download Report
+                    <i className="fas fa-file-pdf"></i> PDF
                   </button>
-                  <p className="text-xs text-gray-500 text-center">*With Detailed Explanation</p>
+                  <button
+                    onClick={downloadCSV}
+                    className="px-4 py-2 bg-[#36c891] text-white rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 text-sm"
+                  >
+                    <i className="fas fa-file-csv"></i> CSV
+                  </button>
+                  <button
+                    onClick={downloadJSON}
+                    className="px-4 py-2 bg-[#927fe1] text-white rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 text-sm"
+                  >
+                    <i className="fas fa-file-code"></i> JSON
+                  </button>
                 </div>
               )}
             </div>
@@ -926,7 +1148,7 @@ export default function WeatherPredictor() {
       </div>
 
       <footer className="mt-8 text-center text-[#8b949e] text-sm">
-        <p>Data source: NASA POWER API | Prediction model: Seasonal pattern analysis</p>
+        <p>Data source: NASA POWER API | Prediction model: Seasonal pattern analysis | The code for prediction / forecasting is written by AI</p>
       </footer>
     </div>
   );
